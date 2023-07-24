@@ -1,0 +1,26 @@
+{
+  "Name": "",
+  "State": "SetupIncomplete",
+  "ParentType": 3,
+  "ParentID": "z96m1.925",
+  "ID": "2da9c299-5eeb-42c1-8d90-3fb84983eb1d",
+  "TimeStamp": "2023-06-09T15:23:32.145-04:00",
+  "Type": "Cylindrical.Gear.ClosedLoopInstruction",
+  "SubType": "",
+  "AppData": {
+    "Inspection": {
+      "TimeStamp": "2023-06-09T15:23:32.145-04:00",
+      "Strings": {
+        "MeasuredQualityCharacteristics": "{\u0022da\u0022:false,\u0022df\u0022:false,\u0022MdK\u0022:false,\u0022MrK\u0022:false,\u0022MdR\u0022:false,\u0022MrR\u0022:false,\u0022Wk\u0022:false,\u0022sn\u0022:false,\u0022sc\u0022:false,\u0022flankRight\u0022:{\u0022profile\u0022:{\u0022Fa\u0022:true,\u0022fHa\u0022:true,\u0022ffa\u0022:true,\u0022Ca\u0022:false},\u0022lead\u0022:{\u0022Fb\u0022:true,\u0022fHb\u0022:true,\u0022ffb\u0022:true,\u0022Cb\u0022:true}},\u0022flankLeft\u0022:{\u0022profile\u0022:{\u0022Fa\u0022:true,\u0022fHa\u0022:true,\u0022ffa\u0022:true,\u0022Ca\u0022:false},\u0022lead\u0022:{\u0022Fb\u0022:true,\u0022fHb\u0022:true,\u0022ffb\u0022:true,\u0022Cb\u0022:true}},\u0022pitchRight\u0022:{\u0022Fr\u0022:false,\u0022Fp\u0022:false,\u0022fp\u0022:false,\u0022fu\u0022:false,\u0022fpz8\u0022:false},\u0022pitchLeft\u0022:{\u0022Fr\u0022:false,\u0022Fp\u0022:false,\u0022fp\u0022:false,\u0022fu\u0022:false,\u0022fpz8\u0022:false}}",
+      },
+      "Booleans": {
+      },
+      "Integers": {
+      },
+      "Doubles": {
+      },
+      "Resources": {
+      }
+    }
+  }
+}

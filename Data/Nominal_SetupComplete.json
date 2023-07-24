@@ -1,0 +1,44 @@
+{
+  "Name": "800PG_TEST",
+  "State": "SetupComplete",
+  "ParentType": 3,
+  "ParentID": "z35m4.0",
+  "ID": "53ff0156-f75d-4c9e-9097-cc6a9cbbc2d6",
+  "TimeStamp": "2023-06-14T12:41:38.031-04:00",
+  "Type": "Cylindrical.Gear.ClosedLoopInstruction",
+  "SubType": "ProfileGrinding.800PG",
+  "AppData": {
+    "Inspection": {
+      "TimeStamp": "2023-06-14T12:41:38.031-04:00",
+      "Strings": {
+        "MeasuredQualityCharacteristics": "{\u0022da\u0022:false,\u0022df\u0022:false,\u0022MdK\u0022:true,\u0022MrK\u0022:false,\u0022MdR\u0022:true,\u0022MrR\u0022:false,\u0022Wk\u0022:true,\u0022sn\u0022:true,\u0022sc\u0022:false,\u0022flankRight\u0022:{\u0022profile\u0022:{\u0022Fa\u0022:true,\u0022fHa\u0022:true,\u0022ffa\u0022:true,\u0022Ca\u0022:true},\u0022lead\u0022:{\u0022Fb\u0022:true,\u0022fHb\u0022:true,\u0022ffb\u0022:true,\u0022Cb\u0022:true}},\u0022flankLeft\u0022:{\u0022profile\u0022:{\u0022Fa\u0022:true,\u0022fHa\u0022:true,\u0022ffa\u0022:true,\u0022Ca\u0022:true},\u0022lead\u0022:{\u0022Fb\u0022:true,\u0022fHb\u0022:true,\u0022ffb\u0022:true,\u0022Cb\u0022:true}},\u0022pitchRight\u0022:{\u0022Fr\u0022:true,\u0022Fp\u0022:true,\u0022fp\u0022:true,\u0022fu\u0022:true,\u0022fpz8\u0022:true},\u0022pitchLeft\u0022:{\u0022Fr\u0022:true,\u0022Fp\u0022:true,\u0022fp\u0022:true,\u0022fu\u0022:true,\u0022fpz8\u0022:true}}",
+        "ClosedLoopTrendConfigObject": "ProfileSlopeDeviationCfgObj",
+        "TrendObject": "TrendSample-12345-trend"
+      },
+      "Booleans": {
+      },
+      "Integers": {
+      },
+      "Doubles": {
+      },
+      "Resources": {
+      }
+    },
+    "UserInput": {
+      "TimeStamp": "2023-06-14T12:41:38.031-04:00",
+      "Strings": {
+        "SmartInstructions": "{\u0022MdK\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.0,\u0022lower\u0022:-0.0178},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:-0.0,\u0022lower\u0022:-0.0178}},\u0022MdR\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.0,\u0022lower\u0022:-0.0178},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:-0.0,\u0022lower\u0022:-0.0178}},\u0022Wk\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022sn\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022flankLeft\u0022:{\u0022profile\u0022:{\u0022Fa\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fHa\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.007,\u0022lower\u0022:-0.007},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:0.008,\u0022lower\u0022:-0.008}},\u0022ffa\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022Ca\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null}},\u0022lead\u0022:{\u0022Fb\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fHb\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.009,\u0022lower\u0022:-0.009},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:0.01,\u0022lower\u0022:-0.01}},\u0022ffb\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022Cb\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.004,\u0022lower\u0022:-0.004},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:0.005,\u0022lower\u0022:-0.005}}}},\u0022flankRight\u0022:{\u0022profile\u0022:{\u0022Fa\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fHa\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.007,\u0022lower\u0022:-0.007},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:0.008,\u0022lower\u0022:-0.008}},\u0022ffa\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022Ca\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null}},\u0022lead\u0022:{\u0022Fb\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fHb\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.009,\u0022lower\u0022:-0.009},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:0.01,\u0022lower\u0022:-0.01}},\u0022ffb\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022Cb\u0022:{\u0022closedLoop\u0022:true,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:{\u0022upper\u0022:0.004,\u0022lower\u0022:-0.004},\u0022CorrectionLimit\u0022:{\u0022upper\u0022:0.005,\u0022lower\u0022:-0.005}}}},\u0022pitchLeft\u0022:{\u0022Fr\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022Fp\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fp\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fu\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fpz8\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null}},\u0022pitchRight\u0022:{\u0022Fr\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022Fp\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fp\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fu\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null},\u0022fpz8\u0022:{\u0022closedLoop\u0022:false,\u0022trendAnalysis\u0022:false,\u0022noCorrection\u0022:null,\u0022CorrectionLimit\u0022:null}}}",
+        "ImplementWhen": "NextPart"
+      },
+      "Booleans": {
+        "Confirmation": false
+      },
+      "Integers": {
+      },
+      "Doubles": {
+      },
+      "Resources": {
+      }
+    }
+  }
+}

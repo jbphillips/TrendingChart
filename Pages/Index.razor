@@ -1,0 +1,379 @@
+﻿@page "/"
+
+@using TrendingChart.Models;
+@using TrendingChart.Models.Config;
+@using TrendingChart.Models.Nominal;
+@using TrendingChart.Services;
+@using Microsoft.JSInterop;
+@using MudBlazor;
+@using System.Net.Http.Json
+@using System.Text;
+@using System.Reflection;
+@using Newtonsoft.Json;
+@using static MudBlazor.CategoryTypes;
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IFakeCorrectionsProvider NominalData
+@inject StateContainer stateContainer
+@inject IJSRuntime JS
+
+<MudText Typo="Typo.h6" Color="Color.Primary">Launch Page</MudText>
+
+<MudGrid>
+    <MudItem xs="10" Class="pt-8 d-flex justify-start">
+        <MudPaper Class="pa-4">
+            <MudItem>
+                <MudText Color="Color.Info">Click a button in the Data Grid to show trendData as related to that Config Object. It will pass in the NominalObject and a specific Correction Item ID to the chart page</MudText>
+            </MudItem>
+        </MudPaper>
+    </MudItem>
+
+    @*This is a parameter grid mock table*@
+    <div class="mud-table mud-table-dense mud-table-hover mud-table-sticky-header mud-elevation-1">
+        <!--!--><div class="mud-table-container" style="height:300px; ;display: block; overflow-x: auto;">
+            <table class="mud-table-root">
+                <thead class="mud-table-head">
+                    <!--!-->
+                    <tr class="mud-table-row"><!--!--><th scope="col" class="mud-table-cell" colspan="3"></th><!--!--><th scope="col" class="mud-table-cell" colspan="2"><!--!--><b>Active</b></th><!--!--><th scope="col" class="mud-table-cell" colspan="1"></th><th scope="col" class="mud-table-cell" colspan="3"><!--!--><b>Tolerance</b></th></tr><!--!-->
+                    <!--!-->
+                    <tr class="mud-table-row">
+                        <!--!-->
+                        <th scope="col" class="mud-table-cell">Characteristic</th><!--!-->
+                        <!--!-->
+                        <th scope="col" class="mud-table-cell"></th><!--!-->
+                        <!--!-->
+                        <th scope="col" class="mud-table-cell" style="width10%"></th><!--!-->
+                        <th scope="col" class="mud-table-cell">Trend Analysis</th><!--!-->
+                        <!--!-->
+                        <th scope="col" class="mud-table-cell">Closed Loop</th><!--!-->
+
+                        <th scope="col" class="mud-table-cell">Show Chart</th><!--!-->
+
+                        <th scope="col" class="mud-table-cell">Lower</th><!--!-->
+                        <th scope="col" class="mud-table-cell" style="width:21% !important">No-Correct</th><!--!-->
+                        <th scope="col" class="mud-table-cell" style="width:14% !important">Upper</th>
+                    </tr>
+                </thead>
+                <tbody class="mud-table-body">
+                    <!--!--><!--!-->
+                    <tr class="mud-table-row" style="">
+                        <!--!-->
+                        <td data-label="Device Part Number" class="mud-table-cell">Total Profile Deviation</td><!--!-->
+                        <!--!-->
+                        <td data-label="Device Serial Number" class="mud-table-cell">F<sub>α</sub></td><!--!-->
+                        <!--!-->
+                        <td data-label="Edge Device Id" class="mud-table-cell">µm</td><!--!-->
+                        <td data-label="Vendor" class="mud-table-cell">
+                            <!--!--><!--!--><div class="mud-input-control mud-input-control-boolean-input">
+                                <div class="mud-input-control-input-container">
+                                    <!--!--><div role="radiogroup" class="mud-radio-group">
+                                        <!--!--><label class="mud-radio mud-disabled mud-radio-content-placement-end" id="radio7a13b2eb">
+                                            <span tabindex="0" class="mud-button-root mud-icon-button mud-primary-text hover:mud-primary-hover mud-radio-dense mud-disabled mud-checked">
+                                                <span class="mud-radio-button">
+                                                    <input tabindex="-1" aria-checked="true" aria-disabled="true" role="radio" type="radio" class="mud-radio-input" name="6ae3d7e0-6b9f-43fa-ad45-d39ff154d01b" disabled=""><!--!-->
+                                                    <span class="mud-radio-icons mud-checked">
+                                                        <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg><!--!-->
+                                                        <svg class="mud-icon-root mud-svg-icon mud-radio-icon-checked mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"></path></svg>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td><!--!-->
+                        <!--!-->
+                        <td data-label="CLosed Loop" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Show Trend" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Production State" class="mud-table-cell">0</td><!--!-->
+                        <td data-label="Description" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Upper" class="mud-table-cell">13</td>
+                    </tr><!--!-->
+                    <tr class="mud-table-row" style="">
+                        <!--!-->
+                        <td data-label="Device Part Number" class="mud-table-cell">Profile Slope Deviation</td><!--!-->
+                        <!--!-->
+                        <td data-label="Device Serial Number" class="mud-table-cell">ƒ<sub>Hα</sub></td><!--!-->
+                        <!--!-->
+                        <td data-label="Edge Device Id" class="mud-table-cell">µm</td><!--!-->
+                        <td data-label="Vendor" class="mud-table-cell">
+                            <!--!--><!--!--><div class="mud-input-control mud-input-control-boolean-input">
+                                <div class="mud-input-control-input-container">
+                                    <!--!--><div role="radiogroup" class="mud-radio-group">
+                                        <!--!--><label class="mud-radio mud-disabled mud-radio-content-placement-end" id="radiob6a92b0f">
+                                            <span tabindex="0" class="mud-button-root mud-icon-button mud-primary-text hover:mud-primary-hover mud-radio-dense mud-disabled mud-checked">
+                                                <span class="mud-radio-button">
+                                                    <input tabindex="-1" aria-checked="true" aria-disabled="true" role="radio" type="radio" class="mud-radio-input" name="a5e86f92-3ec3-4fbb-8335-35b0261a50a9" disabled=""><!--!-->
+                                                    <span class="mud-radio-icons mud-checked">
+                                                        <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg><!--!-->
+                                                        <svg class="mud-icon-root mud-svg-icon mud-radio-icon-checked mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"></path></svg>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td><!--!-->
+                        <!--!-->
+                        <td data-label="CLosed Loop" class="mud-table-cell">
+                            <!--!--><!--!--><div class="mud-input-control mud-input-control-boolean-input">
+                                <div class="mud-input-control-input-container">
+                                    <label class="mud-checkbox" id="checkboxd38c1437">
+                                        <span tabindex="0" class="mud-button-root mud-icon-button mud-secondary-text hover:mud-secondary-hover mud-ripple mud-ripple-checkbox">
+                                            <input tabindex="-1" type="checkbox" class="mud-checkbox-input"><!--!-->
+                                            <!--!-->
+                                            <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M0 0h24v24H0z" fill="none"></path><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td><!--!-->
+                        <td data-label="Show Trend" class="mud-table-cell">
+                            <div class="mud-input-control-input-container">
+
+                                <!--Send Nominal object on button press event-->
+                                <button type="button" onclick="@(()=>NavigateToTrendChart("53ff0156-f75d-4c9e-9097-cc6a9cbbc2d6"))" tabindex="0" class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-filled-size-small mud-width-full mud-ripple">
+                                    <span class="mub-button-label">
+                                        Show
+                                    </span>
+                                </button>
+                            </div>
+                        </td><!--!-->
+                        <td data-label="Production State" class="mud-table-cell">-8</td><!--!-->
+                        <td data-label="Description" class="mud-table-cell">
+                            <!--!--><!--!--><div class="mud-grid mud-grid-spacing-xs-3 justify-start">
+                                @*<!--!--><div class="mud-grid-item mud-grid-item-sm-12 mud-grid-item-md-6"><!--!--><!--!--><!--!--><div class="mud-input-control mud-input-required mud-input-control-margin-dense mud-input-input-control"><div class="mud-input-control-input-container"><!--!--><!--!--><div class="mud-input mud-input-outlined mud-input-margin-dense mud-shrink"><input class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-margin-dense" type="text" inputmode="text" maxlength="524288" aria-invalid="false" _bl_02e7a0bf-1e5f-4117-8c78-d4d989559b5f="7"><div class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-margin-dense" style="display:none" tabindex="-1" _bl_7469b586-d847-45a3-b570-54762578537b=""></div><!--!--><div class="mud-input-outlined-border"></div></div></div></div></div><!--!-->
+                                <!--!--><div class="mud-grid-item mud-grid-item-sm-12 mud-grid-item-md-6"><!--!--><!--!--><!--!--><div class="mud-input-control mud-input-required mud-input-control-margin-dense mud-input-input-control"><div class="mud-input-control-input-container"><!--!--><!--!--><div class="mud-input mud-input-outlined mud-input-margin-dense mud-shrink"><input class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-margin-dense" type="text" inputmode="text" maxlength="524288" aria-invalid="false" _bl_ed61f80b-2f2b-45b2-aa38-a532c32bb168="7"><div class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-margin-dense" style="display:none" tabindex="-1" _bl_8ae37bd7-3aa7-45e0-b07a-847ef0cf1bf3=""></div><!--!--><div class="mud-input-outlined-border"></div></div></div></div></div>
+                                *@
+                                <!--!--><div class="mud-grid-item mud-grid-item-sm-12 mud-grid-item-md-6"><!--!--><!--!--><!--!--><div class="mud-input-control mud-input-required mud-input-control-margin-dense mud-input-input-control"><div class="mud-input-control-input-container"><!--!--><!--!--><div class="mud-input mud-input-outlined mud-input-margin-dense mud-shrink"><input id="lower" style="width:90px !important" type="text" @oninput=OnLowerChange value="-1.2" /><div class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-margin-dense" style="display:none" tabindex="-1" _bl_7469b586-d847-45a3-b570-54762578537b=""></div><!--!--><div class="mud-input-outlined-border"></div></div></div></div></div><!--!-->
+                                <!--!--><div class="mud-grid-item mud-grid-item-sm-12 mud-grid-item-md-6"><!--!--><!--!--><!--!--><div class="mud-input-control mud-input-required mud-input-control-margin-dense mud-input-input-control"><div class="mud-input-control-input-container"><!--!--><!--!--><div class="mud-input mud-input-outlined mud-input-margin-dense mud-shrink"><input id="upper" style="width:90px !important" type="text" @oninput=OnUpperChange value="1.1"><div class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-margin-dense" style="display:none" tabindex="-1" _bl_8ae37bd7-3aa7-45e0-b07a-847ef0cf1bf3=""></div><!--!--><div class="mud-input-outlined-border"></div></div></div></div></div>
+
+                            </div>
+                        </td><!--!-->
+                        <td data-label="Upper" class="mud-table-cell">8</td>
+                    </tr><!--!-->
+                    <tr class="mud-table-row" style="">
+                        <!--!-->
+                        <td data-label="Device Part Number" class="mud-table-cell">Profile Form Deviation</td><!--!-->
+                        <!--!-->
+                        <td data-label="Device Serial Number" class="mud-table-cell">ƒ<sub>fα</sub></td><!--!-->
+                        <!--!-->
+                        <td data-label="Edge Device Id" class="mud-table-cell">µm</td><!--!-->
+                        <td data-label="Vendor" class="mud-table-cell">
+                            <!--!--><!--!--><div class="mud-input-control mud-input-control-boolean-input">
+                                <div class="mud-input-control-input-container">
+                                    <!--!--><div role="radiogroup" class="mud-radio-group">
+                                        <!--!--><label class="mud-radio mud-disabled mud-radio-content-placement-end" id="radio72b6d397">
+                                            <span tabindex="0" class="mud-button-root mud-icon-button mud-primary-text hover:mud-primary-hover mud-radio-dense mud-disabled mud-checked">
+                                                <span class="mud-radio-button">
+                                                    <input tabindex="-1" aria-checked="true" aria-disabled="true" role="radio" type="radio" class="mud-radio-input" name="ca396713-684d-4826-ae33-60d73221c9b4" disabled=""><!--!-->
+                                                    <span class="mud-radio-icons mud-checked">
+                                                        <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg><!--!-->
+                                                        <svg class="mud-icon-root mud-svg-icon mud-radio-icon-checked mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"></path></svg>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td><!--!-->
+                        <!--!-->
+                        <td data-label="CLosed Loop" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Show Trend" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Production State" class="mud-table-cell">0</td><!--!-->
+                        <td data-label="Description" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Upper" class="mud-table-cell">10</td>
+                    </tr><!--!-->
+                    <tr class="mud-table-row" style="">
+                        <!--!-->
+                        <td data-label="Device Part Number" class="mud-table-cell">Profile Crown Amount</td><!--!-->
+                        <!--!-->
+                        <td data-label="Device Serial Number" class="mud-table-cell">C<sub>α</sub></td><!--!-->
+                        <!--!-->
+                        <td data-label="Edge Device Id" class="mud-table-cell">µm</td><!--!-->
+                        <td data-label="Vendor" class="mud-table-cell">
+                            <!--!--><!--!--><div class="mud-input-control mud-input-control-boolean-input">
+                                <div class="mud-input-control-input-container">
+                                    <!--!--><div role="radiogroup" class="mud-radio-group">
+                                        <!--!--><label class="mud-radio mud-disabled mud-radio-content-placement-end" id="radioe8c7adaa">
+                                            <span tabindex="0" class="mud-button-root mud-icon-button mud-primary-text hover:mud-primary-hover mud-radio-dense mud-disabled mud-checked">
+                                                <span class="mud-radio-button">
+                                                    <input tabindex="-1" aria-checked="true" aria-disabled="true" role="radio" type="radio" class="mud-radio-input" name="17a8b76b-f8b2-450d-9f1a-493822935424" disabled=""><!--!-->
+                                                    <span class="mud-radio-icons mud-checked">
+                                                        <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"></path></svg><!--!-->
+                                                        <svg class="mud-icon-root mud-svg-icon mud-radio-icon-checked mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><!--!--><path d="M8.465 8.465C9.37 7.56 10.62 7 12 7C14.76 7 17 9.24 17 12C17 13.38 16.44 14.63 15.535 15.535C14.63 16.44 13.38 17 12 17C9.24 17 7 14.76 7 12C7 10.62 7.56 9.37 8.465 8.465Z"></path></svg>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td><!--!-->
+                        <!--!-->
+                        <td data-label="CLosed Loop" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Show Trend" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Production State" class="mud-table-cell">-5</td><!--!-->
+                        <td data-label="Description" class="mud-table-cell"></td><!--!-->
+                        <td data-label="Upper" class="mud-table-cell">5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</MudGrid>
+
+<style>
+   
+</style>
+
+@code
+{
+    private NominalModel nominalData { get; set; }
+    private IList<NominalModel> nominalObjects = new List<NominalModel>();
+    private ConfigItemModel ProfileCfgItem { get; set; }
+    private String displayMe { get; set; }
+
+    private bool _loading;
+
+    private string? elementLower;
+    private string? elementUpper;
+
+    void OnLowerChange(ChangeEventArgs e)
+    {
+        this.elementLower = e.Value?.ToString();
+    }
+
+    void OnUpperChange(ChangeEventArgs e)
+    {
+        this.elementUpper = e.Value?.ToString();
+
+    }
+
+    protected override void OnInitialized()
+    {
+       
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        nominalData = await NominalData.GetCorrectionsDataAsync();
+
+        // force js interop to update my nocorrection element boxes with default values
+        this.elementUpper = new(await JS.InvokeAsync<string>("upperDefault", "lower", "1.1"));
+        this.elementLower = new(await JS.InvokeAsync<string>("lowerDefault", "upper", "-1.2"));
+
+        // Currently, we only have one nominal object coming back from above call.
+        // But add to a list to simulate how the config app host the objects
+        nominalObjects.Add(nominalData);
+
+        displayMe = DisplayObjectInfo(nominalData);
+
+        Console.WriteLine(displayMe);
+    }
+
+    private void OnLanguageChange(string languageID)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// This is where the magic happens
+    /// parse a selected item from the table and navigate to the TrendChart to show the items trend data
+    /// we will need to send the nominal object and the correction ID
+    /// </summary>
+    /// <param name="rowData"></param>
+    private async void NavigateToTrendChart(string nominalId)
+    {
+        // save the user adjusted nocorrection values
+        ProfileCfgItem = await NominalData.GetConfigItemDataAsync();
+        ProfileCfgItem.CorrectionLimitByUser.Upper = (decimal)Convert.ToDouble(elementUpper);
+        ProfileCfgItem.CorrectionLimitByUser.Lower = (decimal)Convert.ToDouble(elementLower);
+
+        string filePath = @"..\TrendingChart\Data\ProfileSlopeDeviationCfgObj.json";
+        File.WriteAllText(filePath, JsonConvert.SerializeObject(ProfileCfgItem));
+
+        /*************************************************************
+        *
+        * This mock is fetching a sample NominalObject (JSON) via the FakeCorectionsProvider
+        *
+        **************************************************************/
+        var correctionItemId = ProfileCfgItem.Name;
+        nominalData = await NominalData.GetCorrectionsDataAsync();
+
+        // These are the good stuffs that will be used for the Trend Analysis page
+        stateContainer.SelectedNominal = nominalData;
+        stateContainer.CorrectionItemId = correctionItemId;
+
+        // a check to ensure we have the data. If so, navigate to the chart. The stateContainer will provide the data needed to chart
+        if (nominalData.Id.ToString() == nominalId)
+        {
+            NavigationManager.NavigateTo($"TrendPage", false);
+
+        }
+        else
+        {
+            // go to chart, although send a message. Chart will have no data
+            MessageBubble("Whoaa! Here we go with NO data!! " + "nominalData.Id" + " is empty!", Severity.Warning);
+            NavigationManager.NavigateTo($"gemsEnterpriseCorrectionsTrendingApp-TrendPage", false);
+        }
+    }
+
+    public void MessageBubble(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.ShowCloseIcon = false;
+        });
+    }
+
+    /// <summary>
+    /// This is a temporary method used for prototyping.
+    /// Its life purpose is simply to display an objects fields and properties on the screen
+    /// We do this to demonstrate that we have a real object we are working with
+    /// </summary>
+    /// <param name="o"></param>
+    /// <returns></returns>
+    public static string DisplayObjectInfo(Object o)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        // Include the type of the object
+        System.Type type = o.GetType();
+        sb.Append("Type: " + type.Name);
+
+        // Include information for each Field
+        sb.Append(System.Environment.NewLine + "Fields:");
+        System.Reflection.FieldInfo[] fi = type.GetFields();
+        if (fi.Length > 0)
+        {
+            foreach (FieldInfo f in fi)
+            {
+                sb.Append(System.Environment.NewLine + f.ToString() + " = " + f.GetValue(o));
+            }
+        }
+        else
+            sb.Append(System.Environment.NewLine + "None");
+
+        // Include information for each Property
+        sb.Append(System.Environment.NewLine + "Properties:");
+        System.Reflection.PropertyInfo[] pi = type.GetProperties();
+        if (pi.Length > 0)
+        {
+            foreach (PropertyInfo p in pi)
+            {
+                sb.Append(System.Environment.NewLine + p.ToString() + " = " +
+                          p.GetValue(o, null));
+            }
+        }
+        else
+            sb.Append(System.Environment.NewLine + "None");
+
+        return sb.ToString();
+    }
+}

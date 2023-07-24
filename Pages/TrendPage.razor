@@ -1,0 +1,331 @@
+﻿@page "/TrendPage"
+
+@using DevExpress.Blazor;
+@using TrendingChart.Components;
+@using TrendingChart.Models;
+@using TrendingChart.Models.Config;
+@using TrendingChart.Models.Nominal;
+@using TrendingChart.Services;
+@using Microsoft.AspNetCore.Components.Forms;
+@using MudBlazor;
+@using System.Numerics;
+@using System.Collections;
+
+@inject NavigationManager NavigationManager
+@inject ITrendDataProvider Trends
+@inject IFakeCorrectionsProvider CorrectionsConfig
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject StateContainer stateContainer
+
+
+<MudGrid xs="12">
+    <MudItem xs="2" Class="pa-4 d-flex justify-start">
+        <MudPaper Class="pa-4" Height="300px">
+            <MudText Class="pb-2">NoCorrection Tolerance</MudText>
+            <MudItem>
+                <MudNumericField @bind-Value="@AdjustedUpperNoCorrectionTolerance" DebounceInterval="500" OnDebounceIntervalElapsed="HandleIntervalElapsed" Label="Upper" HelperText=@DefaultUpperHelperText Variant="Variant.Outlined" Step=".1M" Max="@TrendData.UpperFixedTolerance.Value" Min="@AdjustedLowerNoCorrectionTolerance" />
+            </MudItem>
+            <MudItem>
+                <MudNumericField @bind-Value="@AdjustedLowerNoCorrectionTolerance" DebounceInterval="500" OnDebounceIntervalElapsed="HandleIntervalElapsed" Label="Lower" HelperText=@DefaultLowerHelperText Variant="Variant.Outlined" Step=".1M" Max="@AdjustedUpperNoCorrectionTolerance" Min="@TrendData.LowerFixedTolerance.Value" />
+            </MudItem>
+            <MudItem Class="pa-2">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" DisableElevation="true" OnClick="@(()=>ResetToleranceValues())" Class="mx-2">Reset</MudButton>
+            </MudItem>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="10">
+        <DxChart Data="TrendData.MeasurementErrors.ToArray()"
+                 Height="800px"
+                 LabelOverlap="ChartLabelOverlap.Hide">
+            <DxChartTitle Text="@ChartTitle" />
+
+            <DxChartZoomAndPanSettings ArgumentAxisZoomAndPanMode="ChartAxisZoomAndPanMode.Both"
+                                       ValueAxisZoomAndPanMode="ChartAxisZoomAndPanMode.None" />
+            <DxChartScrollBarSettings ArgumentAxisScrollBarPosition="ChartScrollBarPosition.Top"
+                                      ArgumentAxisScrollBarVisible="true" />
+
+            <DxChartValueAxis>
+                @*Fixed Tolerances*@
+                <DxChartConstantLine Value="TrendData.UpperFixedTolerance.Value" Color="System.Drawing.Color.Red" Width="3">
+                    <DxChartConstantLineLabel Text="Upper Fixed Tolerance"
+                                              HorizontalAlignment="DevExpress.Blazor.HorizontalAlignment.Center"
+                                              Position="DevExpress.Blazor.RelativePosition.Inside" />
+                </DxChartConstantLine>
+                <DxChartConstantLine Value="TrendData.LowerFixedTolerance.Value" Color="System.Drawing.Color.Red" Width="3">
+                    <DxChartConstantLineLabel Text="Lower Fixed Tolerance"
+                                              HorizontalAlignment="DevExpress.Blazor.HorizontalAlignment.Center"
+                                              Position="DevExpress.Blazor.RelativePosition.Inside" />
+                </DxChartConstantLine>
+                @*Adjustable Tolerances*@
+                <DxChartConstantLine Value="@AdjustedUpperNoCorrectionTolerance" Color="System.Drawing.Color.Yellow" Width="1">
+                    <DxChartConstantLineLabel Text="Upper NoCorrection Tolerance"
+                                              HorizontalAlignment="DevExpress.Blazor.HorizontalAlignment.Center"
+                                              Position="DevExpress.Blazor.RelativePosition.Inside" />
+                </DxChartConstantLine>
+                <DxChartConstantLine Value="@AdjustedLowerNoCorrectionTolerance" Color="System.Drawing.Color.Yellow" Width="1">
+                    <DxChartConstantLineLabel Text="Lower NoCorrection Tolerance"
+                                              HorizontalAlignment="DevExpress.Blazor.HorizontalAlignment.Center"
+                                              Position="DevExpress.Blazor.RelativePosition.Inside" />
+                </DxChartConstantLine>
+            </DxChartValueAxis>
+
+            @if (ShowSeries)
+            {
+                @*Error data points*@
+                <DxChartLineSeries Name="Trend Data"
+                               T="MeasurementErrorData"
+                               TArgument="decimal"
+                               TValue="decimal"
+                               ArgumentField="si => si.XAxisValue"
+                               ValueField="si => si.ErrorValue"
+                                Color="System.Drawing.Color.Green"
+                                HoverMode="ChartContinuousSeriesHoverMode.Series">
+                    <DxChartSeriesPoint Visible=ShowSeriesPointMarkers
+                                    HoverMode="ChartSeriesPointHoverMode.AllPointsForArgument" />
+                    <DxChartSeriesLabel Visible=ShowSeriesLabels
+                                    BackgroundColor="System.Drawing.Color.Transparent"
+                                    Format="ChartElementFormat.LargeNumber(1)" />
+                </DxChartLineSeries>
+
+                @*Calculated TrendLine*@
+                <DxChartLineSeries Name="TrendLine"
+                                Data="TrendData.MeasurementErrors[0].TrendLineCalculated"
+                               T="TrendLineData"
+                               TArgument="decimal"
+                               TValue="decimal"
+                               Color="System.Drawing.Color.LightSkyBlue"
+                               DashStyle="ChartDashStyle.Dash" Width="3"                               
+                               SummaryMethod="Enumerable.Sum"
+                               ArgumentField="@(s => s.XAxisValue)"
+                               ValueField="@(s => s.YAxisValue)">
+                </DxChartLineSeries>
+            }
+                <DxChartLegend AllowToggleSeries="true"
+                           Position="DevExpress.Blazor.RelativePosition.Outside"
+                           Orientation="DevExpress.Blazor.Orientation.Horizontal"
+                           HorizontalAlignment="DevExpress.Blazor.HorizontalAlignment.Right"
+                           VerticalAlignment="VerticalEdge.Bottom"                           
+                           HoverMode="ChartLegendHoverMode.None" />
+
+            <DxChartArgumentAxis>
+                <DxChartAxisTitle Text="@HorizontalUnits" />
+            </DxChartArgumentAxis>
+
+            <DxChartValueAxis>
+                <DxChartAxisTitle Text="@VerticalUnits" />
+            </DxChartValueAxis>
+
+            <DxChartTooltip Enabled=true Position="DevExpress.Blazor.RelativePosition.Inside">
+                <div style="margin: 0.75rem">
+                    @*<div class="fw-bold"><b>@context.Point.SeriesName</b></div>*@
+                    <div>Part: @context.Point.Argument</div>
+                    <div>Error: @context.Point.Value</div>
+                    <details>
+                        <summary>Additional Details:</summary>
+                        <p>More information about the Measurement and Corrections of this data point</p>
+                        <button @onclick="@(() => onShowPDF(context.Point))" class="btn"><i class="fa fa-file-pdf-o"></i></button>
+                    </details>
+                </div>
+            </DxChartTooltip>
+        </DxChart>
+    </MudItem>
+</MudGrid>
+
+<style>
+    /*pdf button in tooltip dialog*/
+    .btn {
+        background-color: DodgerBlue; /* Blue background */
+        border: none; /* Remove borders */
+        color: white; /* White text */
+        padding: 12px 16px; /* Some padding */
+        font-size: 16px; /* Set a font size */
+        cursor: pointer; /* Mouse pointer on hover */
+    }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: RoyalBlue;
+        }
+
+        .mud-container-maxwidth-lg {
+            max-width: 80% !important;
+        }
+</style>
+
+@code
+{
+    private NominalModel NominalObj { get; set; }
+    private string CorrectionItemId { get; set; }
+    private string ChartTitle { get; set; }
+
+    private DxChart<MeasurementErrorData> chartControl = new DxChart<MeasurementErrorData>();
+    private ParameterTrendData TrendData { get; set; }
+    private ConfigItemModel ProfileCfgItem { get; set; }
+    private bool ShowSeriesPointMarkers { get; set; } = true;
+    private bool ShowSeriesLabels { get; set; } = true;
+    private bool ShowSeries { get; set; } = false;
+    private bool ShowPDF { get; set; } = false;
+
+    private string pdfUrl { get; set; } = "pdf/InspectionChartPDF.pdf";
+    private string? HorizontalUnits { get; set; }
+    private string? VerticalUnits { get; set; }
+
+    private decimal? AdjustedUpperNoCorrectionTolerance; // UpperNoCorrectionTolerance
+    private decimal? DefaultUpperNoCorrectionTolerance;
+    private decimal? AdjustedLowerNoCorrectionTolerance;
+    private decimal? DefaultLowerNoCorrectionTolerance;
+    private string? DefaultUpperHelperText;
+    private string? DefaultLowerHelperText;
+
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NominalObj = stateContainer.SelectedNominal;
+        CorrectionItemId = stateContainer.CorrectionItemId;
+        ChartTitle = CorrectionItemId;
+
+        LoadChartData();
+    }
+
+    private void OnLanguageChange(string languageID)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async void LoadChartData()
+    {
+        // fetch the chart trendData collected from the NominalObject and CorrectionId parameters that were passed it
+        var corId = CorrectionItemId;   // as passed in through a state container
+        var nomObj = NominalObj;        // as passed in through a state container
+       
+        // An API call will be used in the config app
+        // The name of this file (or object rather) may come from the NominalObject (setup complete) at property something like: "TrendObject": "TrendSample-12345-trend"
+        // However, this mock fetches the trend data from a json file to demonstrate chart capabilities
+        TrendData = await Trends.GetTrendAsync(); 
+
+        // This mock fetches the ProfileSlopeDeviationCfgObj for tolerances set from parameter grid
+        ProfileCfgItem = await CorrectionsConfig.GetConfigItemDataAsync();
+
+        SetTolerances();
+
+        // build textbox helper strings
+        DefaultUpperHelperText = AdjustedUpperNoCorrectionTolerance.ToString() + " " + "(Original Value)"; // DefaultUpperNoCorrectionTolerance
+        DefaultLowerHelperText = AdjustedLowerNoCorrectionTolerance.ToString() + " " + "(Original Value)"; // DefaultLowerNoCorrectionTolerance
+
+        // chart labels - Probably could have just used the variables in the trendData object but I didn't
+        HorizontalUnits = TrendData.XAxisLabel;
+        VerticalUnits = TrendData.YAxisLabel;
+
+        // if no context, show empty series else show all data series
+        ShowSeries = (String.IsNullOrEmpty(CorrectionItemId)) ? false : true;
+
+    }
+
+    private void SetTolerances()
+    {
+        DefaultUpperNoCorrectionTolerance = TrendData.UpperNoCorrectionTolerance.Value;
+        DefaultLowerNoCorrectionTolerance = TrendData.LowerNoCorrectionTolerance.Value;
+
+        // Set tolerances
+        if (ProfileCfgItem.CorrectionLimitByUser.Upper > TrendData.UpperFixedTolerance.Value)
+        {
+            AdjustedUpperNoCorrectionTolerance = TrendData.UpperFixedTolerance.Value;
+        }
+        else
+        {
+            AdjustedUpperNoCorrectionTolerance = ProfileCfgItem.CorrectionLimitByUser.Upper;
+        }
+
+        if (ProfileCfgItem.CorrectionLimitByUser.Lower < TrendData.LowerFixedTolerance.Value)
+        {
+            AdjustedLowerNoCorrectionTolerance = TrendData.LowerFixedTolerance.Value;
+        }
+        else
+        {
+            AdjustedLowerNoCorrectionTolerance = ProfileCfgItem.CorrectionLimitByUser.Lower;
+        }
+
+        DefaultUpperNoCorrectionTolerance = AdjustedUpperNoCorrectionTolerance;
+        DefaultLowerNoCorrectionTolerance = AdjustedLowerNoCorrectionTolerance;
+    }
+
+    protected void ResetToleranceValues()
+    {
+        AdjustedUpperNoCorrectionTolerance = DefaultUpperNoCorrectionTolerance;
+        AdjustedLowerNoCorrectionTolerance = DefaultLowerNoCorrectionTolerance;
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected void HandleIntervalElapsed(string debouncedText)
+    {
+        // At this stage, interval has elapsed.
+    }
+
+    protected void ChangeUpperNoCorrectionToleranceValue(string value)
+    {
+        AdjustedUpperNoCorrectionTolerance = Convert.ToDecimal(value);
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected void ChangeLowerNoCorrectionToleranceValue(string value)
+    {
+        AdjustedLowerNoCorrectionTolerance = Convert.ToDecimal(value);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private int CheckForMultipleTrendDataObjects(IEnumerable<ParameterTrendData> chartObjects)
+    {
+        var ListOfResultIDs = chartObjects.GroupBy(x => x.ID)
+                            .Select(g => g.First())
+                            .ToList();
+
+        return ListOfResultIDs.Count();
+    }
+
+    private async void onShowPDF(ChartSeriesPoint dataPoint)
+    {
+        var name = dataPoint.SeriesName;
+        MessageBubble("PDF Viewer requested for: " + dataPoint.SeriesName + " on point " + dataPoint.Value + "," + dataPoint.Argument, Severity.Success);
+
+        // In config app, we'll call from Client service
+        // This stubbed code here for reference. Not sure how PDF comes to us at this point
+        // Document document = new Document(PageSize.A4, 30f, 20f, 50f, 40f);
+        // var pdfString = Trends.GetInspectionChartPdf(CorrectionItemId); // CorrectionItemId is passed in parameter
+        // PdfWriter pdfWriter = PdfWriter.GetInstance(document, stream);
+        // etc
+        // ?Session=HaRHCQeNq/Cd9izcQSz5nBpBKvdw5hkDcjB8JD1TZjzLDkOAngiL6LzEOFoSKRYPo5ivsKnwm3lsauN1PWzEFiJe+U+vN4z8Xipw7qjfHfSClyG5ukqVP3T4C6mkxqukgC3D5qFrzsaOv8LOa0mGaqcgMVrC3J3olP/LEftnQKj33S4EukgEpDYMN71wRxPYjYbctmiph5dLqqClAKLQ8MfWfRvFIoGe0SFaB8WlKdLt95Tg3BNMYQsIO61MBjC/ccTWDhPhTKu8vBK6WwXG8IAnM5NHfdrBc0iEGcV09gni3eIvxNORtpqtM/H3eZyO7KKqyNa/UyxpSjuNAs+0Imlc0QFgXfreLfCfPRZbP/CPDfKjPRRBzedo8JIZoIR23tD8U7jvi+DZTm1I2Owprn1fu6ctuPNYZ/brrOp5t5j55vIq0BRftamrag+H5xLgNaKEoa9KRFLLEKJ5plHe/tCVn8a6zYL81IQRiFUJSW7PbqL5U0Fa+Rvfx2qclz7j8MWqev5ZWajP0APApHLcAtyX5rt0WFpTXP3d83PXWF5Wxqg82EPAA5aF4MaNreA+fB/cNzYvbtG0ze7jtq9k2yFfTXFAcMA8Q4yFHOryes3815C5PpyvnFZgIRQe7xKkds2RUL1HKl0ispyfnMp70lAz6NbluAjsr610noD/2YRMcGZ10c6Fcf9galWNlCRMzXqGoy7Uz+Qm1aA8/n3l4LIN79e7RBWCQJlO7m6Xc4UlL+CDH7mLsentSpQkRXLGZEnpdcMZZDzP8C0J46eTrEIkuHkwQCxnSUrDxonuVh+/fo64+r7Gvq4fYM5knoaeR8Aqt4MbodIdk3k6+NiI2DDCcQtd1bB+ESizaMfBtdDg2+etJgbdqMl5cTvLnzoQiHhDlqDtqZ45XeMtlolsr24ucUiuE5uki5K6YabFTzEBnqor4zibKNaCYzof3CND3ouJSgC9qMx4H/B0BIbPdyn4K7B4TwgmsSP8YHFEFn7gg/C4U7zj3DTLdd8R1e3X
+
+        // Prototype displaying PDF from a file
+        var parameters = new DialogParameters { ["pdfUrl"] = pdfUrl }; // either as a URI to the file or a stream. Prototype displays from a file
+        var dialog = await DialogService.ShowAsync<PdfViewerDialog>("Show Data Point PDF", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            ShowPDF = (bool)(result.Data ?? false);
+        }
+    }
+
+    protected void PreparePoint(ChartSeriesPointCustomizationSettings pointSettings)
+    {
+        double value = (double)pointSettings.Point.Value;
+        if (value > 75)
+            pointSettings.PointAppearance.Color = System.Drawing.Color.Red;
+        else if (value < 25)
+            pointSettings.PointAppearance.Color = System.Drawing.Color.Blue;
+    }
+
+    public void MessageBubble(string message, Severity severity)
+    {
+        Snackbar.Add(message, severity, config =>
+        {
+            config.ShowCloseIcon = false;
+        });
+    }
+}

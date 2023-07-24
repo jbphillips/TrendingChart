@@ -1,0 +1,182 @@
+{
+  "ID": "TrendSample-12345",
+  "ChartLabel": "Trend Analysis. Aliquam l",
+  "XAxisLabel": "Number Of Parts",
+  "YAxisLabel": "Error In Microns",
+  "ErrorPlotLabel": "Error Plot",
+  "TrendLineLabel": "TrendLine",
+  "UpperFixedTolerance": {
+    "Label": "UpperFixedTolerance",
+    "Value": 1.2
+  },
+  "LowerFixedTolerance": {
+    "Label": "LowerFixedTolerance",
+    "Value": -1.8
+  },
+  "UpperNoCorrectionTolerance": {
+    "Label": "UpperNoCorrectionTolerance",
+    "Value": 0.8
+  },
+  "LowerNoCorrectionTolerance": {
+    "Label": "LowerNoCorrectionTolerance",
+    "Value": -1.4
+  },
+  "MeasurementErrors": [   
+    {
+      "ErrorValue": 1.9063687076810022194312230304,
+      "XAxisValue": 0,
+      "CorrectionValue": -0.3638249702134905788972966868,
+      "PdfData": "nibh nibh laoreet amet diam. sed sit cons"
+    },
+    {
+      "ErrorValue": -0.9065242371869782205704528652,
+      "XAxisValue": 1,
+      "CorrectionValue": -0.4452991121465385218046449924,
+      "PdfData": "sed amet lorem ut. m"
+    },
+    {
+      "ErrorValue": -0.6600033509085900089117188340,
+      "XAxisValue": 2,
+      "CorrectionValue": 1.5073943110724786931559506936,
+      "PdfData": "amet lorem diam consectetuer."
+    },
+    {
+      "ErrorValue": -1.0874556027812822086599743368,
+      "XAxisValue": 3,
+      "CorrectionValue": 1.8064311439401827207949585516,
+      "PdfData": "amet consectetuer nibh erat "
+    },
+    {
+      "ErrorValue": -1.8863738683902788876497637732,
+      "XAxisValue": 4,
+      "CorrectionValue": -0.1073151867496496020741734108,
+      "PdfData": "sed nonummy. dolore "
+    },
+    {
+      "ErrorValue": 0.7170199295728863485828937300,
+      "XAxisValue": 5,
+      "CorrectionValue": -0.8502862918407609578700550568,
+      "PdfData": "adipiscing diam aliquam dolor. elit laoreet"
+    },
+    {
+      "ErrorValue": -0.8005068160604430557904353084,
+      "XAxisValue": 6,
+      "CorrectionValue": 0.5297859602922929347577291016,
+      "PdfData": "dolor euismod magna nonummy nibh. euismod adipiscing nonummy nonumm"
+    },
+    {
+      "ErrorValue": 1.8932071092746429269741446732,
+      "XAxisValue": 7,
+      "CorrectionValue": 0.1126064029719618670080127136,
+      "PdfData": "aliquam consectetuer consectetuer. erat nonummy lo"
+    },
+    {
+      "ErrorValue": -0.1465564381784690524808236512,
+      "XAxisValue": 8,
+      "CorrectionValue": 1.9417145143754488650607713700,
+      "PdfData": "sit magna erat sit adipiscing. tincidunt amet"
+    },
+    {
+      "ErrorValue": 1.0453140027112741254757764332,
+      "XAxisValue": 9,
+      "CorrectionValue": 0.1962800864039102939955285076,
+      "PdfData": "magna adipiscing"
+    },
+    {
+      "ErrorValue": -0.7324906097919748104329114452,
+      "XAxisValue": 10,
+      "CorrectionValue": 0.0962800864039102939955285076,
+      "PdfData": "sed sit sit ut."
+    },
+    {
+      "ErrorValue": 1.5572160270183727695552469984,
+      "XAxisValue": 11,
+      "CorrectionValue": 0.4516676803402221220308640396,
+      "PdfData": "dolor nibh diam sed lorem. nibh sit consectetuer sit "
+    },
+    {
+      "ErrorValue": -0.6448646191827131598805167996,
+      "XAxisValue": 12,
+      "CorrectionValue": -1.1292449840578676776554964268,
+      "PdfData": "lorem erat elit. ut lorem do"
+    },
+    {
+      "ErrorValue": -0.6949934408695573624156978495,
+      "XAxisValue": 13,
+      "CorrectionValue": 0.34364662365888803217268585727,
+      "PdfData": "ipsum nonu"
+    },
+    {
+      "ErrorValue": 0.54026238617829582228735352065,
+      "XAxisValue": 14,
+      "CorrectionValue": -0.54947529357132662479277528289,
+      "PdfData": "consectetuer nonummy elit i"
+    },
+    {
+      "ErrorValue": -0.50956023274193941777528848989,
+      "XAxisValue": 15,
+      "CorrectionValue": -0.674625191038921966217809652830,
+      "PdfData": "erat diam aliquam lorem laoreet. nonummy lorem "
+    },
+    {
+      "ErrorValue": -0.78508002401208231042436291933,
+      "XAxisValue": 16,
+      "CorrectionValue": -0.74134645109435827235600670545,
+      "PdfData": "dolor magna sed lorem. sed lorem sed laoreet. "
+    },
+    {
+      "ErrorValue": -0.66727683063443515216232788907,
+      "XAxisValue": 17,
+      "CorrectionValue": -0.24263525398133292236933576761,
+      "PdfData": "laoreet amet sit. magna tincidunt c"
+    },
+    {
+      "ErrorValue": -0.58794201738181336759862109093,
+      "XAxisValue": 18,
+      "CorrectionValue": -0.59243724280327698955519233123,
+      "PdfData": "tincidunt nibh tincidunt lorem d"
+    },
+    {
+      "ErrorValue": 0.63154024398389885515966372377,
+      "XAxisValue": 19,
+      "CorrectionValue": -0.79194060225323746472067810815,
+      "PdfData": "sed lorem diam. lorem"
+    },
+    {
+      "ErrorValue": 0.49739842869854683501774157107,
+      "XAxisValue": 20,
+      "CorrectionValue": -0.16969536960798303920784254833,
+      "PdfData": "magna tincidunt adipiscing erat. "
+    },
+    {
+      "ErrorValue": -0.0956023274193941777528848989,
+      "XAxisValue": 21,
+      "CorrectionValue": -0.67462519103892196621780965283,
+      "PdfData": "erat diam aliquam lorem laoreet. nonummy lorem "
+    },
+    {
+      "ErrorValue": -0.78508002401208231042436291933,
+      "XAxisValue": 22,
+      "CorrectionValue": -0.74134645109435827235600670545,
+      "PdfData": "dolor magna sed lorem. sed lorem sed laoreet. "
+    },
+    {
+      "ErrorValue": -0.66727683063443515216232788907,
+      "XAxisValue": 23,
+      "CorrectionValue": -0.24263525398133292236933576761,
+      "PdfData": "laoreet amet sit. magna tincidunt c"
+    },
+    {
+      "ErrorValue": -0.58794201738181336759862109093,
+      "XAxisValue": 24,
+      "CorrectionValue": -0.59243724280327698955519233123,
+      "PdfData": "tincidunt nibh tincidunt lorem d"
+    },
+    {
+      "ErrorValue": 0.63154024398389885515966372377,
+      "XAxisValue": 25,
+      "CorrectionValue": -0.79194060225323746472067810815,
+      "PdfData": "sed lorem diam. lorem"
+    }
+  ]
+}
