@@ -1,19 +1,44 @@
 ﻿@inherits LayoutComponentBase
+@inject ISnackbar Snackbar
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 
 <PageTitle>TrendingChart</PageTitle>
 
-<div class="page">
-  @*  <div class="sidebar">
-        <NavMenu />
-    </div>*@
+<MudLayout>
+    <MudAppBar Color="Color.Primary" Class="align-center justify-center">
+        
+        <MudItem>
+            <MudText Typo="Typo.h5">Blazor DevExpress Line Chart Prototype</MudText>
+            @*            Class="d-flex align-center justify-center mud-width-full py-8"*@
+        </MudItem>
+           
+    </MudAppBar>
+    <MudMainContent Class="py-0 my-0">
+        <MudStack>
+            <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-0 mainContainer" Style="margin:0 auto;">
+                @Body
+            </MudContainer>
 
-    <main>
-      @*  <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>*@
+        </MudStack>
+    </MudMainContent>
+   
+    <BottomAppBar />
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+</MudLayout>
+
+@code {
+    private bool _isDarkMode;
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
+}

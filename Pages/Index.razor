@@ -20,20 +20,20 @@
 @inject StateContainer stateContainer
 @inject IJSRuntime JS
 
-<MudText Typo="Typo.h6" Color="Color.Primary">Launch Page</MudText>
+@*<MudAlert Typo="Typo.h6" Color="Color.Primary">Launch Page</MudAlert>*@
 
-<MudGrid>
-    <MudItem xs="10" Class="pt-8 d-flex justify-start">
+<MudGrid Justify="Justify.Center" Class="mt-16">
+    <MudItem xs="10" Class="pt-8 d-flex align-center justify-center">
         <MudPaper Class="pa-4">
             <MudItem>
-                <MudText Color="Color.Info">Click a button in the Data Grid to show trendData as related to that Config Object. It will pass in the NominalObject and a specific Correction Item ID to the chart page</MudText>
+                <MudText Color="Color.Info">Click the button in the Data Grid to show trendData as related to our JSON Object. It will pass in the NominalObject and a specific Item ID to the chart page</MudText>
             </MudItem>
         </MudPaper>
     </MudItem>
 
     @*This is a parameter grid mock table*@
     <div class="mud-table mud-table-dense mud-table-hover mud-table-sticky-header mud-elevation-1">
-        <!--!--><div class="mud-table-container" style="height:300px; ;display: block; overflow-x: auto;">
+        <!--!--><div class="mud-table-container" style="height:400px; ;display: block; overflow-x: auto;">
             <table class="mud-table-root">
                 <thead class="mud-table-head">
                     <!--!-->
